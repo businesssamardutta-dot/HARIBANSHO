@@ -286,21 +286,40 @@
                     </Card>
                     
                     {/* Card 3: Distubation Reminder */}
-                    <Card icon="bi bi-bell-fill" title="Distubation reminder">
-                        <div className="flex flex-wrap gap-2 mb-3">
-                            <button onClick={setReminder} 
-                                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all hover:scale-95"
-                                style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>
-                                <i className="bi bi-clock"></i> Set Reminder
-                            </button>
-                            <button onClick={viewReminders}
-                                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all hover:scale-95"
-                                style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>
-                                <i className="bi bi-eye"></i> View Reminders
-                            </button>
-                        </div>
-                        {reminderMessage && <div className="text-xs mt-2 font-medium" style={{ color: currentTheme.accent }}>{reminderMessage}</div>}
-                    </Card>
+                   <Card icon="bi bi-bell-fill" title="Distubation reminder">
+    {/* Primary Launch App Button */}
+    <div className="mb-4">
+        <a 
+            href="https://script.google.com/macros/s/AKfycbyewh1tpN0kyvArPAIC_436tepFY1R6gph-f5vonqpeM0AVhVyyjxj5hqFq2wi0tqeHXA/exec" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-white transition-all hover:scale-95 active:opacity-90 shadow-sm"
+            style={{ backgroundColor: '#8b5cf6' }} // This is the purple color from the image
+        >
+            <i className="bi bi-box-arrow-up-right"></i> Launch App
+        </a>
+    </div>
+
+    {/* Secondary Buttons */}
+    <div className="flex flex-wrap gap-2 mb-3">
+        <button onClick={setReminder} 
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all hover:scale-95"
+            style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>
+            <i className="bi bi-clock"></i> Set Reminder
+        </button>
+        <button onClick={viewReminders}
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all hover:scale-95"
+            style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>
+            <i className="bi bi-eye"></i> View Reminders
+        </button>
+    </div>
+
+    {reminderMessage && (
+        <div className="text-xs mt-2 font-medium" style={{ color: currentTheme.accent }}>
+            {reminderMessage}
+        </div>
+    )}
+</Card>
                     
                     {/* Card 4: Attendence Master */}
                     <Card icon="bi bi-person-badge" title="Attendence master">
