@@ -1,3 +1,5 @@
+--- START OF FILE Paste June 02, 2026 - 3:18PM ---
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,7 +23,6 @@
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         
-        /* Inline panel animation */
         @keyframes slideDown {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -34,9 +35,8 @@
 <body class="bg-slate-50" id="root"></body>
 
 <script type="text/babel">
-    const { useState, useEffect, useCallback } = React;
+    const { useState, useEffect } = React;
 
-    // ==================== 13 LOKERTIVE THEMES ====================
     const themes = [
         { id: 0, name: 'Violet Dream', accent: '#8b5cf6', accentLight: '#f3e8ff', textPrimary: '#0f172a', textSecondary: '#475569', border: '#e2e8f0', cardBg: '#ffffff', bodyBg: '#f8fafc' },
         { id: 1, name: 'Emerald Glow', accent: '#10b981', accentLight: '#d1fae5', textPrimary: '#064e3b', textSecondary: '#047857', border: '#a7f3d0', cardBg: '#ffffff', bodyBg: '#ecfdf5' },
@@ -53,120 +53,79 @@
         { id: 12, name: 'Electric Cyan', accent: '#06b6d4', accentLight: '#cffafe', textPrimary: '#164e63', textSecondary: '#0891b2', border: '#a5f3fc', cardBg: '#ffffff', bodyBg: '#ecfeff' }
     ];
 
-    // Reminder System
-    let reminderList = [];
-
-    // Main App Component
     const App = () => {
-        // Theme state
         const [currentTheme, setCurrentTheme] = useState(() => {
             const saved = localStorage.getItem('haribanshoReactTheme');
             return saved ? JSON.parse(saved) : themes[0];
         });
         const [dropdownOpen, setDropdownOpen] = useState(false);
-        
-        // Inline Panel State (for Google Scripts - opens in same window)
-        const [activePanel, setActivePanel] = useState(null); // { url, title }
-        
-        // Reminder state
+        const [activePanel, setActivePanel] = useState(null);
         const [reminders, setReminders] = useState([]);
         const [reminderMessage, setReminderMessage] = useState('');
-        
-        // IQ Response state
         const [iqResponse, setIqResponse] = useState('🤖 Ready to analyze operations');
-        
-        // Live Data state
         const [liveData, setLiveData] = useState({ employees: 52, tasks: 28, completion: 87.5, time: new Date().toLocaleTimeString() });
         
-        // Apply theme to body
         useEffect(() => {
             document.body.style.backgroundColor = currentTheme.bodyBg;
-            document.documentElement.style.setProperty('--theme-accent', currentTheme.accent);
-            document.documentElement.style.setProperty('--theme-accent-light', currentTheme.accentLight);
             localStorage.setItem('haribanshoReactTheme', JSON.stringify(currentTheme));
         }, [currentTheme]);
         
-        // Load reminders from localStorage
         useEffect(() => {
             const saved = localStorage.getItem('haribanshoReminders');
             if (saved) setReminders(JSON.parse(saved));
         }, []);
         
-        // Save reminders
         useEffect(() => {
             localStorage.setItem('haribanshoReminders', JSON.stringify(reminders));
         }, [reminders]);
         
-        // Live data interval
         useEffect(() => {
             const interval = setInterval(() => {
-                setLiveData({
+                setLiveData(prev => ({
+                    ...prev,
                     employees: 48 + Math.floor(Math.random() * 18),
-                    tasks: 22 + Math.floor(Math.random() * 15),
-                    completion: (72 + Math.random() * 24).toFixed(1),
                     time: new Date().toLocaleTimeString()
-                });
-            }, 35000);
+                }));
+            }, 5000);
             return () => clearInterval(interval);
         }, []);
         
-        // Theme handlers
         const selectTheme = (theme) => {
             setCurrentTheme(theme);
             setDropdownOpen(false);
         };
         
-        // Reminder handlers
         const setReminder = () => {
             const text = prompt("Set a disturbance reminder:");
             if (text?.trim()) {
                 const newReminder = { id: Date.now(), text: text.trim(), time: new Date().toLocaleString() };
-                const updated = [...reminders, newReminder];
-                setReminders(updated);
-                setReminderMessage(`✅ Reminder added: "${text}" at ${new Date().toLocaleTimeString()}`);
+                setReminders([...reminders, newReminder]);
+                setReminderMessage(`✅ Added: "${text}"`);
                 setTimeout(() => setReminderMessage(''), 3000);
             }
         };
         
         const viewReminders = () => {
             if (reminders.length === 0) {
-                setReminderMessage("📭 No active reminders.");
-                setTimeout(() => setReminderMessage(''), 2000);
+                alert("No active reminders.");
             } else {
                 alert(reminders.map(r => `🔹 ${r.text} (${r.time})`).join('\n'));
             }
         };
         
-        // IQ Handlers
         const healthScan = () => {
             setIqResponse('<i class="bi bi-arrow-repeat animate-spin mr-1"></i> Scanning...');
-            setTimeout(() => setIqResponse('✅ Health Index: 94% | Task Flow: Optimal | Attendance: 89%'), 700);
+            setTimeout(() => setIqResponse('✅ Health Index: 94% | Flow: Optimal'), 700);
         };
         
         const productivityPulse = () => {
-            setIqResponse('⚡ Productivity Pulse: Peak 9–11 AM | +22% efficiency recommended');
+            setIqResponse('⚡ Pulse: Peak 9–11 AM | +22% efficiency');
         };
-        
-        // Open inline panel (same window, no fullscreen)
+
         const openInlinePanel = (url, title) => {
             setActivePanel({ url: url + (url.includes('?') ? '&' : '?') + '_cb=' + Date.now(), title });
         };
         
-        const closeInlinePanel = () => {
-            setActivePanel(null);
-        };
-        
-        // Refresh live data
-        const refreshLiveData = () => {
-            setLiveData({
-                employees: 48 + Math.floor(Math.random() * 18),
-                tasks: 22 + Math.floor(Math.random() * 15),
-                completion: (72 + Math.random() * 24).toFixed(1),
-                time: new Date().toLocaleTimeString()
-            });
-        };
-        
-        // Card component
         const Card = ({ icon, title, children }) => (
             <div className="rounded-2xl border shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" 
                  style={{ backgroundColor: currentTheme.cardBg, borderColor: currentTheme.border }}>
@@ -194,7 +153,6 @@
                         <p className="text-sm mt-1 font-medium" style={{ color: currentTheme.textSecondary }}>Real-time Intelligence Dashboard</p>
                     </div>
                     
-                    {/* Theme Dropdown */}
                     <div className="relative">
                         <button 
                             onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -230,175 +188,100 @@
                     </div>
                 </div>
                 
-                {/* Inline Panel (Same Window, No Fullscreen) */}
                 {activePanel && (
                     <div className="mb-6 rounded-2xl border shadow-lg overflow-hidden inline-panel" style={{ backgroundColor: currentTheme.cardBg, borderColor: currentTheme.border }}>
                         <div className="flex justify-between items-center p-4 border-b" style={{ borderColor: currentTheme.border }}>
-                            <h3 className="font-semibold" style={{ color: currentTheme.textPrimary }}>
-                                <i className="bi bi-window-sidebar mr-2" style={{ color: currentTheme.accent }}></i>
-                                {activePanel.title}
-                            </h3>
-                            <button onClick={closeInlinePanel} className="text-slate-400 hover:text-slate-600 text-2xl leading-none">&times;</button>
+                            <h3 className="font-semibold" style={{ color: currentTheme.textPrimary }}>{activePanel.title}</h3>
+                            <button onClick={() => setActivePanel(null)} className="text-slate-400 hover:text-slate-600 text-2xl leading-none">&times;</button>
                         </div>
-                        <iframe 
-                            src={activePanel.url} 
-                            className="w-full h-[500px] border-0"
-                            title={activePanel.title}
-                            sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-popups-to-escape-sandbox"
-                        />
+                        <iframe src={activePanel.url} className="w-full h-[500px] border-0" />
                     </div>
                 )}
                 
-                {/* 6 Cards Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    
-                    {/* Card 1: Task Deligation */}
+                    {/* Card 1 */}
                     <Card icon="bi bi-check2-square" title="Task Deligation">
-                        <p className="text-sm mb-4" style={{ color: currentTheme.textSecondary }}>Smart delegation, track progress & insights</p>
+                        <p className="text-sm mb-4" style={{ color: currentTheme.textSecondary }}>Manage workflows and track completion.</p>
                         <div className="flex flex-wrap gap-2">
-                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSf4hFkMP31RLK2GLikE9LpctnIwhd-DKQLJAXJchdIQ733gwQ/viewform" target="_blank" rel="noopener noreferrer" 
-                               className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all hover:scale-95"
-                               style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>
-                                <i className="bi bi-file-text"></i> Form
-                            </a>
-                            <a href="https://lookerstudio.google.com/reporting/c5bf7946-59a1-4896-be77-ec76dbd83447/page/qlD" target="_blank" rel="noopener noreferrer"
-                               className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all hover:scale-95"
-                               style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>
-                                <i className="bi bi-check-circle"></i> Done List
-                            </a>
-                            <a href="https://lookerstudio.google.com/reporting/0c82f513-49ae-409f-a29c-39e7ea615dd7/page/qlD" target="_blank" rel="noopener noreferrer"
-                               className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all hover:scale-95"
-                               style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>
-                                <i className="bi bi-table"></i> Task Sheet
-                            </a>
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSf4hFkMP31RLK2GLikE9LpctnIwhd-DKQLJAXJchdIQ733gwQ/viewform" target="_blank" className="px-3 py-1.5 rounded-full text-xs font-semibold" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>Form</a>
+                            <a href="https://lookerstudio.google.com/reporting/c5bf7946-59a1-4896-be77-ec76dbd83447/page/qlD" target="_blank" className="px-3 py-1.5 rounded-full text-xs font-semibold" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>Done List</a>
                         </div>
                     </Card>
                     
-                    {/* Card 2: Check List */}
+                    {/* Card 2 */}
                     <Card icon="bi bi-clipboard-check" title="Check List">
-                        <p className="text-sm mb-4" style={{ color: currentTheme.textSecondary }}>Powerful checklist management</p>
-                        <a href="https://checklist-nu-blue.vercel.app/" target="_blank" rel="noopener noreferrer" 
-                           className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all hover:scale-95"
-                           style={{ backgroundColor: currentTheme.accent, color: 'white' }}>
+                        <p className="text-sm mb-4" style={{ color: currentTheme.textSecondary }}>Real-time sync checklist management.</p>
+                        <a href="https://checklist-nu-blue.vercel.app/" target="_blank" 
+                           className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-white transition-all hover:scale-95"
+                           style={{ backgroundColor: currentTheme.accent }}>
                             <i className="bi bi-box-arrow-up-right"></i> Launch App
                         </a>
-                        <p className="text-xs mt-3" style={{ color: currentTheme.textSecondary }}><i className="bi bi-sync-alt"></i> Real-time sync • GitHub power</p>
                     </Card>
                     
-                    {/* Card 3: Distubation Reminder */}
-                   <Card icon="bi bi-bell-fill" title="Distubation reminder">
-    {/* Primary Launch App Button */}
-    <div className="mb-4">
-        <a 
-            href="https://script.google.com/macros/s/AKfycbyewh1tpN0kyvArPAIC_436tepFY1R6gph-f5vonqpeM0AVhVyyjxj5hqFq2wi0tqeHXA/exec" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-white transition-all hover:scale-95 active:opacity-90 shadow-sm"
-            style={{ backgroundColor: '#8b5cf6' }} // This is the purple color from the image
-        >
-            <i className="bi bi-box-arrow-up-right"></i> Launch App
-        </a>
-    </div>
-
-    {/* Secondary Buttons */}
-    <div className="flex flex-wrap gap-2 mb-3">
-        <button onClick={setReminder} 
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all hover:scale-95"
-            style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>
-            <i className="bi bi-clock"></i> Set Reminder
-        </button>
-        <button onClick={viewReminders}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all hover:scale-95"
-            style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>
-            <i className="bi bi-eye"></i> View Reminders
-        </button>
-    </div>
-
-    {reminderMessage && (
-        <div className="text-xs mt-2 font-medium" style={{ color: currentTheme.accent }}>
-            {reminderMessage}
-        </div>
-    )}
-</Card>
+                    {/* Card 3 */}
+                    <Card icon="bi bi-bell-fill" title="Disturbance Reminder">
+                        <div className="mb-4">
+                            <a href="https://script.google.com/macros/s/AKfycbyewh1tpN0kyvArPAIC_436tepFY1R6gph-f5vonqpeM0AVhVyyjxj5hqFq2wi0tqeHXA/exec" 
+                               target="_blank" className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-white transition-all hover:scale-95"
+                               style={{ backgroundColor: '#8b5cf6' }}>
+                                <i className="bi bi-box-arrow-up-right"></i> Launch App
+                            </a>
+                        </div>
+                        <div className="flex gap-2">
+                            <button onClick={setReminder} className="px-3 py-1 rounded-full text-xs font-medium" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>Set</button>
+                            <button onClick={viewReminders} className="px-3 py-1 rounded-full text-xs font-medium" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>View</button>
+                        </div>
+                        {reminderMessage && <div className="text-[10px] mt-2 font-bold" style={{ color: currentTheme.accent }}>{reminderMessage}</div>}
+                    </Card>
                     
-                    {/* Card 4: Attendence Master */}
-                    <Card icon="bi bi-person-badge" title="Attendence master">
-                        <div className="grid grid-cols-3 gap-2 mb-3">
-                            <button onClick={() => openInlinePanel('https://script.google.com/macros/s/AKfycbygiTRzoZQDNN_VANMsX00TI6ZEZrKeSLmahTvxpvZ2wAyEYfrxovJNyoDkiozS9snZ/exec', 'Attendance Dashboard')}
-                                className="py-2 rounded-xl text-center transition-all hover:scale-105"
-                                style={{ backgroundColor: currentTheme.accentLight }}>
-                                <i className="bi bi-pie-chart-fill block mx-auto mb-1" style={{ color: currentTheme.accent }}></i>
-                                <span className="text-xs font-medium" style={{ color: currentTheme.textPrimary }}>Dashboard</span>
-                            </button>
-                            <button onClick={() => openInlinePanel('https://script.google.com/macros/s/AKfycbyM89xYOYj3D_BvT52KFQnVN7d-U-8RcNuRQtcEVaEh1ne5KSojxVwo5GMBujWBiuEh/exec', 'Employee Management')}
-                                className="py-2 rounded-xl text-center transition-all hover:scale-105"
-                                style={{ backgroundColor: currentTheme.accentLight }}>
-                                <i className="bi bi-person-plus-fill block mx-auto mb-1" style={{ color: currentTheme.accent }}></i>
-                                <span className="text-xs font-medium" style={{ color: currentTheme.textPrimary }}>Add/Remove</span>
-                            </button>
-                            <button onClick={() => openInlinePanel('https://script.google.com/macros/s/AKfycbwY4BAapkeUOHfo4XFFO8vbg6BLG7AVF6MynOXHp_zrLGhytlhh4xdrnfBGozxiWGaD/exec', 'MIS Report Suite')}
-                                className="py-2 rounded-xl text-center transition-all hover:scale-105"
-                                style={{ backgroundColor: currentTheme.accentLight }}>
-                                <i className="bi bi-graph-up block mx-auto mb-1" style={{ color: currentTheme.accent }}></i>
-                                <span className="text-xs font-medium" style={{ color: currentTheme.textPrimary }}>MIS Report</span>
-                            </button>
+                    {/* UPDATED Card 4: Attendance Master */}
+                    <Card icon="bi bi-person-badge" title="Attendance Master">
+                        <p className="text-sm mb-4" style={{ color: currentTheme.textSecondary }}>Comprehensive employee & MIS management portal.</p>
+                        <div className="mb-4">
+                            {/* LINK UPDATED TO THE REQUESTED URL AND SET TO OPEN IN NEW TAB TO SOLVE "BACK BUTTON" ISSUE */}
+                            <a 
+                                href="https://businesssamardutta-dot.github.io/Attendence/" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-white transition-all hover:scale-95 shadow-sm"
+                                style={{ backgroundColor: currentTheme.accent }}
+                            >
+                                <i className="bi bi-box-arrow-up-right"></i> Launch Attendance App
+                            </a>
                         </div>
                         <div className="text-xs p-2 rounded-lg text-center" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.textSecondary }}>
-                            <i className="bi bi-globe2"></i> HARIBANSHA Live Sync • {liveData.time}
+                            <i className="bi bi-globe2 mr-1"></i> Live Sync • {liveData.time}
                         </div>
                     </Card>
                     
-                    {/* Card 5: HARIBANSHA IQ */}
+                    {/* Card 5 */}
                     <Card icon="bi bi-cpu" title="HARIBANSHA IQ">
-                        <div className="flex flex-wrap gap-2 mb-3">
-                            <button onClick={healthScan}
-                                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all hover:scale-95"
-                                style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>
-                                <i className="bi bi-heart-pulse"></i> Health Scan
-                            </button>
-                            <button onClick={productivityPulse}
-                                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all hover:scale-95"
-                                style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>
-                                <i className="bi bi-lightning-charge"></i> Productivity Pulse
-                            </button>
+                        <div className="flex gap-2 mb-3">
+                            <button onClick={healthScan} className="px-3 py-1.5 rounded-full text-xs font-semibold" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>Scan</button>
+                            <button onClick={productivityPulse} className="px-3 py-1.5 rounded-full text-xs font-semibold" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>Pulse</button>
                         </div>
                         <div className="text-xs p-2 rounded-lg text-center" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.textSecondary }}>
                             <span dangerouslySetInnerHTML={{ __html: iqResponse }} />
                         </div>
                     </Card>
                     
-                    {/* Card 6: Live Data Hub */}
-                    <Card icon="bi bi-bar-chart-steps" title="Live Data Hub">
-                        <button onClick={refreshLiveData}
-                            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all hover:scale-95 mb-3"
-                            style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>
-                            <i className="bi bi-arrow-repeat"></i> Refresh Stats
-                        </button>
+                    {/* Card 6 */}
+                    <Card icon="bi bi-bar-chart-steps" title="Live Hub">
                         <div className="text-xs p-3 rounded-lg space-y-1" style={{ backgroundColor: currentTheme.accentLight }}>
-                            <div className="flex justify-between"><span>👥 Active Staff:</span><span className="font-bold">{liveData.employees}</span></div>
-                            <div className="flex justify-between"><span>📋 Tasks Today:</span><span className="font-bold">{liveData.tasks}</span></div>
-                            <div className="flex justify-between"><span>✅ Completion:</span><span className="font-bold">{liveData.completion}%</span></div>
-                            <div className="flex justify-between"><span>⚙️ Uptime:</span><span className="font-bold">99.98%</span></div>
+                            <div className="flex justify-between"><span>👥 Staff:</span><span className="font-bold">{liveData.employees}</span></div>
+                            <div className="flex justify-between"><span>✅ Done:</span><span className="font-bold">{liveData.completion}%</span></div>
+                            <div className="flex justify-between"><span>⚙️ Uptime:</span><span className="font-bold">99.9%</span></div>
                         </div>
                     </Card>
                 </div>
                 
-                {/* Footer */}
-                <footer className="text-center text-slate-400 text-xs pt-6 border-t border-slate-100 mt-4">
-                    <i className="bi bi-charging-station"></i> HARIBANSHA React Dashboard • Real-time Intelligence
+                <footer className="text-center text-slate-400 text-xs pt-8 mt-4 border-t border-slate-100">
+                    <i className="bi bi-charging-station"></i> HARIBANSHA React Dashboard • 2026
                 </footer>
             </div>
         );
     };
     
-    // Render React App
     ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-    
-    // Suppress React warnings from iframe
-    const origConsoleError = console.error;
-    console.error = function(...args) {
-        if (typeof args[0] === 'string' && (args[0].includes('Invalid DOM property') || args[0].includes('stroke-width'))) return;
-        origConsoleError.apply(console, args);
-    };
 </script>
 </html>
