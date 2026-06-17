@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HARIBANSHA | React Dashboard</title>
+    <title>HARIBANSHA | Gradient Dashboard</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -13,7 +13,7 @@
     <!-- Babel Standalone -->
     <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
     <style>
-        * { transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease; }
+        * { transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease; }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
@@ -23,40 +23,45 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .inline-panel { animation: slideDown 0.25s ease-out; }
+        .grad-text { background-clip: text; -webkit-background-clip: text; color: transparent; }
     </style>
 </head>
 <body class="bg-slate-50">
     <div id="root"></div>
 
-    <!-- 1. WE STORE THE JSX IN A TEMPLATE TAG (Browser ignores this, preventing errors) -->
+    <!-- 1. THE JSX CONTENT (Stored in template to prevent GitHub/Babel errors) -->
     <script type="text/template" id="jsx-content">
         const { useState, useEffect } = React;
 
+        // Mapped your 15 CSS Gradients into the React Theme Engine
         const themes = [
-            { id: 0, name: 'Violet Dream', accent: '#8b5cf6', accentLight: '#f3e8ff', textPrimary: '#0f172a', textSecondary: '#475569', border: '#e2e8f0', cardBg: '#ffffff', bodyBg: '#f8fafc' },
-            { id: 1, name: 'Emerald Glow', accent: '#10b981', accentLight: '#d1fae5', textPrimary: '#064e3b', textSecondary: '#047857', border: '#a7f3d0', cardBg: '#ffffff', bodyBg: '#ecfdf5' },
-            { id: 2, name: 'Rose Quartz', accent: '#f43f5e', accentLight: '#ffe4e6', textPrimary: '#881337', textSecondary: '#e11d48', border: '#fecdd3', cardBg: '#ffffff', bodyBg: '#fff1f2' },
-            { id: 3, name: 'Ocean Breeze', accent: '#0ea5e9', accentLight: '#e0f2fe', textPrimary: '#0c4a6e', textSecondary: '#0284c7', border: '#bae6fd', cardBg: '#ffffff', bodyBg: '#f0f9ff' },
-            { id: 4, name: 'Amber Sunset', accent: '#f59e0b', accentLight: '#fef3c7', textPrimary: '#78350f', textSecondary: '#d97706', border: '#fde68a', cardBg: '#ffffff', bodyBg: '#fffbeb' },
-            { id: 5, name: 'Teal Mystic', accent: '#14b8a6', accentLight: '#ccfbf1', textPrimary: '#134e4a', textSecondary: '#0d9488', border: '#99f6e4', cardBg: '#ffffff', bodyBg: '#f0fdfa' },
-            { id: 6, name: 'Indigo Nights', accent: '#6366f1', accentLight: '#e0e7ff', textPrimary: '#1e1b4b', textSecondary: '#4338ca', border: '#c7d2fe', cardBg: '#ffffff', bodyBg: '#eef2ff' },
-            { id: 7, name: 'Coral Haven', accent: '#f97316', accentLight: '#ffedd5', textPrimary: '#7f2d1b', textSecondary: '#ea580c', border: '#fed7aa', cardBg: '#ffffff', bodyBg: '#fff5f0' },
-            { id: 8, name: 'Lime Frost', accent: '#84cc16', accentLight: '#ecfccb', textPrimary: '#365314', textSecondary: '#65a30d', border: '#d9f99d', cardBg: '#ffffff', bodyBg: '#f7fee7' },
-            { id: 9, name: 'Royal Purple', accent: '#a855f7', accentLight: '#f3e8ff', textPrimary: '#3b0764', textSecondary: '#9333ea', border: '#e9d5ff', cardBg: '#ffffff', bodyBg: '#faf5ff' },
-            { id: 10, name: 'Peach Bloom', accent: '#ef4444', accentLight: '#fee2e2', textPrimary: '#7f1d1d', textSecondary: '#dc2626', border: '#fecaca', cardBg: '#ffffff', bodyBg: '#fef2f2' },
-            { id: 11, name: 'Mint Leaf', accent: '#22c55e', accentLight: '#dcfce7', textPrimary: '#14532d', textSecondary: '#16a34a', border: '#bbf7d0', cardBg: '#ffffff', bodyBg: '#f0fdf4' },
-            { id: 12, name: 'Electric Cyan', accent: '#06b6d4', accentLight: '#cffafe', textPrimary: '#164e63', textSecondary: '#0891b2', border: '#a5f3fc', cardBg: '#ffffff', bodyBg: '#ecfeff' }
+            { id: 0, name: 'Lime Glow', start: '#6DE195', end: '#C4E759', isDark: false },
+            { id: 1, name: 'Minty', start: '#41C7AF', end: '#54E38E', isDark: false },
+            { id: 2, name: 'Spring', start: '#99E5A2', end: '#D4FC78', isDark: false },
+            { id: 3, name: 'Sky Blue', start: '#ABC7FF', end: '#C1E3FF', isDark: false },
+            { id: 4, name: 'Azure', start: '#6CACFF', end: '#8DEBFF', isDark: false },
+            { id: 5, name: 'Oceanic', start: '#5583EE', end: '#41D8DD', isDark: false },
+            { id: 6, name: 'Lavender', start: '#A16BFE', end: '#DEB0DF', isDark: false },
+            { id: 7, name: 'Sunset', start: '#D279EE', end: '#F8C390', isDark: false },
+            { id: 8, name: 'Peach', start: '#F78FAD', end: '#FDEB82', isDark: false },
+            { id: 9, name: 'Crimson', start: '#BC3D2F', end: '#A16BFE', isDark: false },
+            { id: 10, name: 'Royal', start: '#A43AB2', end: '#E13680', isDark: false },
+            { id: 11, name: 'Berry', start: '#9D2E7D', end: '#E16E93', isDark: false },
+            { id: 12, name: 'Blossom', start: '#F5CCF6', end: '#F1EEF9', isDark: false },
+            { id: 13, name: 'Cloud', start: '#F0EFF0', end: '#FAF8F9', isDark: false },
+            { id: 14, name: 'Midnight', start: '#121317', end: '#323B42', isDark: true }
         ];
 
         const Card = ({ icon, title, theme, children }) => (
-            <div className="rounded-2xl border shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" 
-                 style={{ backgroundColor: theme.cardBg, borderColor: theme.border }}>
+            <div className="rounded-2xl border shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden bg-white" 
+                 style={{ borderColor: theme.isDark ? '#333' : '#e2e8f0' }}>
                 <div className="p-5">
                     <div className="flex items-center gap-3 mb-3">
-                        <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: theme.accentLight }}>
-                            <i className={`${icon} text-xl`} style={{ color: theme.accent }}></i>
+                        <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-md" 
+                             style={{ background: `linear-gradient(135deg, ${theme.start}, ${theme.end})` }}>
+                            <i className={`${icon} text-xl`}></i>
                         </div>
-                        <h2 className="text-xl font-bold" style={{ color: theme.textPrimary }}>{title}</h2>
+                        <h2 className="text-xl font-bold" style={{ color: theme.isDark ? '#fff' : '#0f172a' }}>{title}</h2>
                     </div>
                     {children}
                 </div>
@@ -65,16 +70,16 @@
 
         const App = () => {
             const [currentTheme, setCurrentTheme] = useState(() => {
-                const saved = localStorage.getItem('haribanshoReactTheme');
+                const saved = localStorage.getItem('haribanshoTheme');
                 return saved ? JSON.parse(saved) : themes[0];
             });
             const [dropdownOpen, setDropdownOpen] = useState(false);
-            const [iqResponse, setIqResponse] = useState('🤖 Ready to analyze operations');
+            const [iqResponse, setIqResponse] = useState('🤖 Ready to analyze');
             const [liveData, setLiveData] = useState({ employees: 52, completion: 87.5, time: new Date().toLocaleTimeString() });
 
             useEffect(() => {
-                document.body.style.backgroundColor = currentTheme.bodyBg;
-                localStorage.setItem('haribanshoReactTheme', JSON.stringify(currentTheme));
+                document.body.style.backgroundColor = currentTheme.isDark ? '#121317' : '#f8fafc';
+                localStorage.setItem('haribanshoTheme', JSON.stringify(currentTheme));
             }, [currentTheme]);
 
             useEffect(() => {
@@ -88,34 +93,51 @@
                 return () => clearInterval(interval);
             }, []);
 
+            const btnStyle = {
+                background: `linear-gradient(135deg, ${currentTheme.start}, ${currentTheme.end})`,
+                color: '#ffffff'
+            };
+
             return (
                 <div className="max-w-[1440px] mx-auto px-4 py-8">
-                    <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8">
+                    {/* Header */}
+                    <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-10">
                         <div>
-                            <h1 className="text-4xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
-                                <i className="bi bi-charging-station-fill text-purple-500 mr-2"></i>
+                            <h1 className="text-4xl font-extrabold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+                                <i className="bi bi-lightning-charge-fill text-yellow-400 mr-2"></i>
                                 HARIBANSHA
                             </h1>
-                            <p className="text-sm font-medium" style={{ color: currentTheme.textSecondary }}>Real-time Intelligence Dashboard</p>
+                            <p className="text-sm font-medium" style={{ color: currentTheme.isDark ? '#94a3b8' : '#64748b' }}>
+                                Intelligence Dashboard • {currentTheme.name}
+                            </p>
                         </div>
-                        
+
                         <div className="relative">
-                            <button onClick={() => setDropdownOpen(!dropdownOpen)}
-                                className="flex items-center gap-2 px-5 py-2.5 rounded-full border shadow-sm text-sm font-medium"
-                                style={{ backgroundColor: currentTheme.cardBg, borderColor: currentTheme.border, color: currentTheme.textPrimary }}>
-                                <i className="bi bi-palette-fill" style={{ color: currentTheme.accent }}></i>
+                            <button 
+                                onClick={() => setDropdownOpen(!dropdownOpen)}
+                                className="flex items-center gap-2 px-6 py-2.5 rounded-full border shadow-sm font-bold text-sm transition-all"
+                                style={{ 
+                                    background: currentTheme.isDark ? '#333' : '#fff', 
+                                    borderColor: currentTheme.isDark ? '#444' : '#e2e8f0',
+                                    color: currentTheme.isDark ? '#fff' : '#0f172a'
+                                }}>
+                                <div className="w-4 h-4 rounded-full" style={{ background: `linear-gradient(135deg, ${currentTheme.start}, ${currentTheme.end})` }}></div>
                                 <span>{currentTheme.name}</span>
-                                <i className={`bi bi-chevron-down transition-transform ${dropdownOpen ? 'rotate-180' : ''}`}></i>
+                                <i className={`bi bi-chevron-down text-xs ${dropdownOpen ? 'rotate-180' : ''}`}></i>
                             </button>
+
                             {dropdownOpen && (
-                                <div className="absolute right-0 mt-2 w-72 rounded-2xl shadow-xl border overflow-hidden z-50 inline-panel" 
-                                     style={{ backgroundColor: currentTheme.cardBg, borderColor: currentTheme.border }}>
-                                    <div className="p-3 grid grid-cols-4 gap-2 max-h-80 overflow-y-auto">
-                                        {themes.map(theme => (
-                                            <button key={theme.id} onClick={() => {setCurrentTheme(theme); setDropdownOpen(false);}}
-                                                className="flex flex-col items-center gap-1 p-2 rounded-xl" style={{ backgroundColor: theme.accentLight }}>
-                                                <div className="w-6 h-6 rounded-full" style={{ backgroundColor: theme.accent }}></div>
-                                                <span className="text-[10px] font-medium" style={{ color: theme.textPrimary }}>{theme.name.split(' ')[0]}</span>
+                                <div className="absolute right-0 mt-3 w-80 rounded-2xl shadow-2xl border overflow-hidden z-50 inline-panel" 
+                                     style={{ backgroundColor: currentTheme.isDark ? '#1e293b' : '#fff', borderColor: currentTheme.isDark ? '#334155' : '#e2e8f0' }}>
+                                    <div className="p-3 grid grid-cols-3 gap-2 max-h-96 overflow-y-auto">
+                                        {themes.map(t => (
+                                            <button 
+                                                key={t.id} 
+                                                onClick={() => { setCurrentTheme(t); setDropdownOpen(false); }}
+                                                className="flex flex-col items-center gap-1 p-2 rounded-xl hover:scale-105 transition-transform"
+                                                style={{ background: `linear-gradient(135deg, ${t.start}, ${t.end})` }}
+                                            >
+                                                <span className="text-[10px] font-bold text-white">{t.name.split(' ')[0]}</span>
                                             </button>
                                         ))}
                                     </div>
@@ -124,49 +146,50 @@
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {/* Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <Card icon="bi bi-check2-square" title="Task Delegation" theme={currentTheme}>
-                            <p className="text-sm mb-4" style={{ color: currentTheme.textSecondary }}>Manage workflows and track completion.</p>
+                            <p className="text-sm mb-4" style={{ color: currentTheme.isDark ? '#94a3b8' : '#64748b' }}>Workflows & Tracking.</p>
                             <div className="flex gap-2">
-                                <a href="https://docs.google.com/forms/d/e/1FAIpQLSf4hFkMP31RLK2GLikE9LpctnIwhd-DKQLJAXJchdIQ733gwQ/viewform" target="_blank" className="px-3 py-1.5 rounded-full text-xs font-semibold" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>Form</a>
-                                <a href="https://lookerstudio.google.com/reporting/c5bf7946-59a1-4896-be77-ec76dbd83447/page/qlD" target="_blank" className="px-3 py-1.5 rounded-full text-xs font-semibold" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>Done List</a>
+                                <a href="https://docs.google.com/forms/d/e/1FAIpQLSf4hFkMP31RLK2GLikE9LpctnIwhd-DKQLJAXJchdIQ733gwQ/viewform" target="_blank" className="px-4 py-2 rounded-full text-xs font-bold text-white shadow-lg" style={btnStyle}>Form</a>
+                                <a href="https://lookerstudio.google.com/reporting/c5bf7946-59a1-4896-be77-ec76dbd83447/page/qlD" target="_blank" className="px-4 py-2 rounded-full text-xs font-bold text-white shadow-lg" style={btnStyle}>Done List</a>
                             </div>
                         </Card>
 
                         <Card icon="bi bi-clipboard-check" title="Check List" theme={currentTheme}>
-                            <p className="text-sm mb-4" style={{ color: currentTheme.textSecondary }}>Real-time sync checklist management.</p>
-                            <a href="https://checklist-nu-blue.vercel.app/" target="_blank" className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-white" style={{ backgroundColor: currentTheme.accent }}>
+                            <p className="text-sm mb-4" style={{ color: currentTheme.isDark ? '#94a3b8' : '#64748b' }}>Real-time sync management.</p>
+                            <a href="https://checklist-nu-blue.vercel.app/" target="_blank" className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-white shadow-lg" style={btnStyle}>
                                 <i className="bi bi-box-arrow-up-right"></i> Launch App
                             </a>
                         </Card>
 
-                        <Card icon="bi bi-person-badge" title="Attendance Master" theme={currentTheme}>
-                            <p className="text-sm mb-4" style={{ color: currentTheme.textSecondary }}>Employee & MIS management portal.</p>
-                            <a href="https://businesssamardutta-dot.github.io/Attendence/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-white" style={{ backgroundColor: currentTheme.accent }}>
+                        <Card icon="bi bi-person-badge" title="Attendance" theme={currentTheme}>
+                            <p className="text-sm mb-4" style={{ color: currentTheme.isDark ? '#94a3b8' : '#64748b' }}>Employee & MIS Portal.</p>
+                            <a href="https://businesssamardutta-dot.github.io/Attendence/" target="_blank" className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-white shadow-lg" style={btnStyle}>
                                 <i className="bi bi-box-arrow-up-right"></i> Launch App
                             </a>
                         </Card>
 
-                        <Card icon="bi bi-cpu" title="HARIBANSHA IQ" theme={currentTheme}>
+                        <Card icon="bi bi-cpu" title="Haribansha IQ" theme={currentTheme}>
                             <div className="flex gap-2 mb-3">
-                                <button onClick={() => setIqResponse('✅ Health: 94%')} className="px-3 py-1.5 rounded-full text-xs font-semibold" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>Scan</button>
+                                <button onClick={() => setIqResponse('✅ System Flow: Optimal')} className="px-4 py-2 rounded-full text-xs font-bold text-white shadow-md" style={btnStyle}>Scan System</button>
                             </div>
-                            <div className="text-xs p-2 rounded-lg text-center" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.textSecondary }}>
+                            <div className="text-xs p-3 rounded-xl text-center font-medium" style={{ backgroundColor: currentTheme.isDark ? '#334155' : '#f1f5f9', color: currentTheme.isDark ? '#fff' : '#475569' }}>
                                 {iqResponse}
                             </div>
                         </Card>
 
                         <Card icon="bi bi-bar-chart-steps" title="Live Hub" theme={currentTheme}>
-                            <div className="text-xs p-3 rounded-lg space-y-1" style={{ backgroundColor: currentTheme.accentLight }}>
-                                <div className="flex justify-between"><span>👥 Staff:</span><span className="font-bold">{liveData.employees}</span></div>
-                                <div className="flex justify-between"><span>✅ Done:</span><span className="font-bold">{liveData.completion}%</span></div>
-                                <div className="flex justify-between"><span>🕒 Time:</span><span className="font-bold">{liveData.time}</span></div>
+                            <div className="text-xs p-4 rounded-xl space-y-2" style={{ backgroundColor: currentTheme.isDark ? '#334155' : '#f1f5f9', color: currentTheme.isDark ? '#cbd5e1' : '#475569' }}>
+                                <div className="flex justify-between"><span>👥 Staff:</span><span className="font-bold text-black" style={{ color: currentTheme.isDark ? '#fff' : '#000' }}>{liveData.employees}</span></div>
+                                <div className="flex justify-between"><span>✅ Done:</span><span className="font-bold text-black" style={{ color: currentTheme.isDark ? '#fff' : '#000' }}>{liveData.completion}%</span></div>
+                                <div className="flex justify-between"><span>🕒 Time:</span><span className="font-bold text-black" style={{ color: currentTheme.isDark ? '#fff' : '#000' }}>{liveData.time}</span></div>
                             </div>
                         </Card>
                     </div>
 
-                    <footer className="text-center text-slate-400 text-xs pt-8 mt-4 border-t border-slate-100">
-                        <i className="bi bi-charging-station"></i> HARIBANSHA React Dashboard • 2026
+                    <footer className="text-center text-slate-400 text-xs pt-12 mt-10 border-t border-slate-200">
+                        <i className="bi bi-shield-check"></i> HARIBANSHA SMART DASHBOARD • 2026
                     </footer>
                 </div>
             );
@@ -176,25 +199,20 @@
         root.render(<App />);
     </script>
 
-    <!-- 2. THE ENGINE: This script manually transforms the template and runs it -->
+    <!-- 2. THE ENGINE: Manual Babel Transformation for GitHub Pages Compatibility -->
     <script>
         (function() {
             try {
-                // Get the JSX from the template tag
                 const jsxCode = document.getElementById('jsx-content').innerHTML;
-                
-                // Transform it using Babel manually
                 const transformedCode = Babel.transform(jsxCode, {
                     presets: ['react']
                 }).code;
-
-                // Create a new script element and run the transformed code
                 const script = document.createElement('script');
                 script.text = transformedCode;
                 document.body.appendChild(script);
             } catch (err) {
-                console.error("Babel Transformation Error:", err);
-                document.getElementById('root').innerHTML = `<div class="p-10 text-red-500">Error loading dashboard. Check console.</div>`;
+                console.error("Dashboard Error:", err);
+                document.getElementById('root').innerHTML = `<div class="p-10 text-red-500">System Error. Check Console.</div>`;
             }
         })();
     </script>
