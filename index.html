@@ -25,9 +25,10 @@
 <body class="bg-slate-50">
     <div id="root"></div>
 
-    <!-- 1. THE JSX CONTENT (Hidden in a template) -->
+    <!-- 1. THE JSX CONTENT (Hidden in a template to prevent GitHub Errors) -->
     <script type="text/plain" id="jsx-content">
-        // We use React.useState instead of destructuring to prevent Babel from adding imports
+        const { useState, useEffect } = React;
+
         const themes = [
             { id: 0, name: 'Lime Glow', start: '#6DE195', end: '#C4E759', isDark: false },
             { id: 1, name: 'Minty', start: '#41C7AF', end: '#54E38E', isDark: false },
@@ -46,38 +47,38 @@
             { id: 14, name: 'Midnight', start: '#121317', end: '#323B42', isDark: true }
         ];
 
-        const Card = ({ icon, title, theme, children }) => {
-            return React.createElement('div', {
-                className: "rounded-2xl border shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden bg-white",
-                style: { borderColor: theme.isDark ? '#333' : '#e2e8f0' }
-            }, 
-            React.createElement('div', { className: "p-5" },
-                React.createElement('div', { className: "flex items-center gap-3 mb-3" },
-                    React.createElement('div', {
-                        className: "w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-md",
-                        style: { background: `linear-gradient(135deg, ${theme.start}, ${theme.end})` }
-                    }, React.createElement('i', { className: icon + " text-xl" })),
-                    React.createElement('h2', { className: "text-xl font-bold", style: { color: theme.isDark ? '#fff' : '#0f172a' } }, title)
-                ),
-                children
-            ));
-        };
+        // Card component moved OUTSIDE App to fix stability
+        const Card = ({ icon, title, theme, children }) => (
+            <div className="rounded-2xl border shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden bg-white" 
+                 style={{ borderColor: theme.isDark ? '#333' : '#e2e8f0' }}>
+                <div className="p-5">
+                    <div className="flex items-center gap-3 mb-3">
+                        <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-md" 
+                             style={{ background: `linear-gradient(135deg, ${theme.start}, ${theme.end})` }}>
+                            <i className={icon + " text-xl"}></i>
+                        </div>
+                        <h2 className="text-xl font-bold" style={{ color: theme.isDark ? '#fff' : '#0f172a' }}>{title}</h2>
+                    </div>
+                    {children}
+                </div>
+            </div>
+        );
 
         const App = () => {
-            const [currentTheme, setCurrentTheme] = React.useState(() => {
+            const [currentTheme, setCurrentTheme] = useState(() => {
                 const saved = localStorage.getItem('haribanshoTheme');
                 return saved ? JSON.parse(saved) : themes[0];
             });
-            const [dropdownOpen, setDropdownOpen] = React.useState(false);
-            const [iqResponse, setIqResponse] = React.useState('🤖 Ready to analyze');
-            const [liveData, setLiveData] = React.useState({ employees: 52, completion: 87.5, time: new Date().toLocaleTimeString() });
+            const [dropdownOpen, setDropdownOpen] = useState(false);
+            const [iqResponse, setIqResponse] = useState('🤖 Ready to analyze');
+            const [liveData, setLiveData] = useState({ employees: 52, completion: 87.5, time: new Date().toLocaleTimeString() });
 
-            React.useEffect(() => {
+            useEffect(() => {
                 document.body.style.backgroundColor = currentTheme.isDark ? '#121317' : '#f8fafc';
                 localStorage.setItem('haribanshoTheme', JSON.stringify(currentTheme));
             }, [currentTheme]);
 
-            React.useEffect(() => {
+            useEffect(() => {
                 const interval = setInterval(() => {
                     setLiveData(prev => ({
                         ...prev,
@@ -135,9 +136,9 @@
                         )
                     )
                 ),
-                // Main Grid
+                // Grid
                 React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" },
-                    // Card 1
+                    // Card 1: Task Delegation (YOUR LINKS ARE HERE)
                     Card({ icon: "bi bi-check2-square", title: "Task Delegation", theme: currentTheme },
                         React.createElement('p', { className: "text-sm mb-4", style: { color: currentTheme.isDark ? '#94a3b8' : '#64748b' } }, "Workflows & Tracking."),
                         React.createElement('div', { className: "flex gap-2" },
@@ -145,24 +146,24 @@
                             React.createElement('a', { href: "https://lookerstudio.google.com/reporting/c5bf7946-59a1-4896-be77-ec76dbd83447/page/qlD", target: "_blank", className: "px-4 py-2 rounded-full text-xs font-bold text-white shadow-lg", style: btnStyle }, "Done List")
                         )
                     ),
-                    // Card 2
+                    // Card 2: Check List (YOUR LINK IS HERE)
                     Card({ icon: "bi bi-clipboard-check", title: "Check List", theme: currentTheme },
                         React.createElement('p', { className: "text-sm mb-4", style: { color: currentTheme.isDark ? '#94a3b8' : '#64748b' } }, "Real-time sync management."),
                         React.createElement('a', { href: "https://checklist-nu-blue.vercel.app/", target: "_blank", className: "inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-white shadow-lg", style: btnStyle }, React.createElement('i', { className: "bi bi-box-arrow-up-right" }), " Launch App")
                     ),
-                    // Card 3
-                    Card({ icon: "bi bi-person-badge", title: "Attendance", theme: currentTheme },
+                    // Card 3: Attendance (YOUR LINK IS HERE)
+                    Card({ icon: "bi bi-person-badge", title: "Attendance Master", theme: currentTheme },
                         React.createElement('p', { className: "text-sm mb-4", style: { color: currentTheme.isDark ? '#94a3b8' : '#64748b' } }, "Employee & MIS Portal."),
                         React.createElement('a', { href: "https://businesssamardutta-dot.github.io/Attendence/", target: "_blank", className: "inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-white shadow-lg", style: btnStyle }, React.createElement('i', { className: "bi bi-box-arrow-up-right" }), " Launch App")
                     ),
-                    // Card 4
+                    // Card 4: IQ
                     Card({ icon: "bi bi-cpu", title: "Haribansha IQ", theme: currentTheme },
                         React.createElement('div', { className: "flex gap-2 mb-3" },
                             React.createElement('button', { onClick: () => setIqResponse('✅ System Flow: Optimal'), className: "px-4 py-2 rounded-full text-xs font-bold text-white shadow-md", style: btnStyle }, "Scan System")
                         ),
                         React.createElement('div', { className: "text-xs p-3 rounded-xl text-center font-medium", style: { backgroundColor: currentTheme.isDark ? '#334155' : '#f1f5f9', color: currentTheme.isDark ? '#fff' : '#475569' } }, iqResponse)
                     ),
-                    // Card 5
+                    // Card 5: Live Hub
                     Card({ icon: "bi bi-bar-chart-steps", title: "Live Hub", theme: currentTheme },
                         React.createElement('div', { className: "text-xs p-4 rounded-xl space-y-2", style: { backgroundColor: currentTheme.isDark ? '#334155' : '#f1f5f9', color: currentTheme.isDark ? '#cbd5e1' : '#475569' } },
                             React.createElement('div', { className: "flex justify-between" }, React.createElement('span', null, "👥 Staff:"), React.createElement('span', { className: "font-bold", style: { color: currentTheme.isDark ? '#fff' : '#000' } }, liveData.employees)),
@@ -178,37 +179,22 @@
         root.render(React.createElement(App));
     </script>
 
-    <!-- 2. THE NUCLEAR ENGINE: Cleans code and runs it without 'appendChild' or 'import' errors -->
+    <!-- 2. THE ENGINE: Cleans code and runs it without 'appendChild' or 'import' errors -->
     <script>
         (function() {
             try {
-                // 1. Get the raw code
                 let code = document.getElementById('jsx-content').innerHTML;
-
-                // 2. Transform with Babel
-                let transformed = Babel.transform(code, {
-                    presets: ['react']
-                }).code;
-
-                // 3. NUCLEAR CLEANING: Remove any 'import' or 'export' Babel might have hallucinated
-                // This prevents the "Cannot use import statement outside a module" error
+                let transformed = Babel.transform(code, { presets: ['react'] }).code;
+                
+                // CLEANING: Remove any 'import' or 'export' Babel tries to inject
                 transformed = transformed.replace(/import\s+.*\s+from\s+['"].*['"];?/g, '');
                 transformed = transformed.replace(/export\s+default\s+/g, '');
-                transformed = transformed.replace(/export\s+/g, '');
 
-                // 4. Execute in a safe, isolated function wrapper
-                // We pass React and ReactDOM as arguments to the function to ensure it knows what they are
                 const runCode = new Function('React', 'ReactDOM', transformed);
                 runCode(window.React, window.ReactDOM);
-
             } catch (err) {
-                console.error("CRITICAL DASHBOARD ERROR:", err);
-                document.getElementById('root').innerHTML = `
-                    <div style="padding: 50px; text-align: center; font-family: sans-serif; color: red;">
-                        <h1>System Initialization Failed</h1>
-                        <p>The error is: ${err.message}</p>
-                        <p>Please check your internet connection or GitHub settings.</p>
-                    </div>`;
+                console.error("Dashboard Error:", err);
+                document.getElementById('root').innerHTML = `<div class="p-10 text-red-500 text-center">Error loading dashboard. Check console.</div>`;
             }
         })();
     </script>
