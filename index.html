@@ -2,35 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HARIBANSHA | React Dashboard</title>
-    <!-- Tailwind CSS v4 + Bootstrap Icons -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <!-- React 18 + ReactDOM -->
+    <!-- React 18 -->
     <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
-    <!-- Babel for JSX -->
+    <!-- Babel -->
     <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
     <style>
-        * {
-            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
-        }
+        * { transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease; }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        
         @keyframes slideDown {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .inline-panel {
-            animation: slideDown 0.25s ease-out;
-        }
+        .inline-panel { animation: slideDown 0.25s ease-out; }
     </style>
 </head>
-<body class="bg-slate-50" id="root"></body>
+<body class="bg-slate-50">
+    <!-- Root element moved inside body -->
+    <div id="root"></div>
 
 <script type="text/babel">
     const { useState, useEffect } = React;
@@ -50,6 +47,22 @@
         { id: 11, name: 'Mint Leaf', accent: '#22c55e', accentLight: '#dcfce7', textPrimary: '#14532d', textSecondary: '#16a34a', border: '#bbf7d0', cardBg: '#ffffff', bodyBg: '#f0fdf4' },
         { id: 12, name: 'Electric Cyan', accent: '#06b6d4', accentLight: '#cffafe', textPrimary: '#164e63', textSecondary: '#0891b2', border: '#a5f3fc', cardBg: '#ffffff', bodyBg: '#ecfeff' }
     ];
+
+    // FIXED: Card component moved OUTSIDE App to prevent re-render loops
+    const Card = ({ icon, title, children, theme }) => (
+        <div className="rounded-2xl border shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" 
+             style={{ backgroundColor: theme.cardBg, borderColor: theme.border }}>
+            <div className="p-5">
+                <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: theme.accentLight }}>
+                        <i className={`${icon} text-xl`} style={{ color: theme.accent }}></i>
+                    </div>
+                    <h2 className="text-xl font-bold" style={{ color: theme.textPrimary }}>{title}</h2>
+                </div>
+                {children}
+            </div>
+        </div>
+    );
 
     const App = () => {
         const [currentTheme, setCurrentTheme] = useState(() => {
@@ -120,25 +133,6 @@
             setIqResponse('⚡ Pulse: Peak 9–11 AM | +22% efficiency');
         };
 
-        const openInlinePanel = (url, title) => {
-            setActivePanel({ url: url + (url.includes('?') ? '&' : '?') + '_cb=' + Date.now(), title });
-        };
-        
-        const Card = ({ icon, title, children }) => (
-            <div className="rounded-2xl border shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" 
-                 style={{ backgroundColor: currentTheme.cardBg, borderColor: currentTheme.border }}>
-                <div className="p-5">
-                    <div className="flex items-center gap-3 mb-3">
-                        <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: currentTheme.accentLight }}>
-                            <i className={`${icon} text-xl`} style={{ color: currentTheme.accent }}></i>
-                        </div>
-                        <h2 className="text-xl font-bold" style={{ color: currentTheme.textPrimary }}>{title}</h2>
-                    </div>
-                    {children}
-                </div>
-            </div>
-        );
-        
         return (
             <div className="max-w-[1440px] mx-auto px-4 sm:px-6 py-6 sm:py-8">
                 {/* Header */}
@@ -154,7 +148,7 @@
                     <div className="relative">
                         <button 
                             onClick={() => setDropdownOpen(!dropdownOpen)}
-                            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border shadow-sm hover:shadow-md transition-all duration-200 text-slate-700 font-medium text-sm"
+                            className="flex items-center gap-2 px-5 py-2.5 rounded-full border shadow-sm hover:shadow-md transition-all duration-200 text-sm font-medium"
                             style={{ backgroundColor: currentTheme.cardBg, borderColor: currentTheme.border, color: currentTheme.textPrimary }}
                         >
                             <i className="bi bi-palette-fill" style={{ color: currentTheme.accent }}></i>
@@ -163,7 +157,7 @@
                         </button>
                         
                         {dropdownOpen && (
-                            <div className="absolute right-0 mt-2 w-72 rounded-2xl shadow-xl border overflow-hidden z-50 animate-fade-in" 
+                            <div className="absolute right-0 mt-2 w-72 rounded-2xl shadow-xl border overflow-hidden z-50 inline-panel" 
                                  style={{ backgroundColor: currentTheme.cardBg, borderColor: currentTheme.border }}>
                                 <div className="p-3 border-b" style={{ borderColor: currentTheme.border, backgroundColor: currentTheme.accentLight }}>
                                     <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: currentTheme.textSecondary }}>Choose your vibe</p>
@@ -186,19 +180,9 @@
                     </div>
                 </div>
                 
-                {activePanel && (
-                    <div className="mb-6 rounded-2xl border shadow-lg overflow-hidden inline-panel" style={{ backgroundColor: currentTheme.cardBg, borderColor: currentTheme.border }}>
-                        <div className="flex justify-between items-center p-4 border-b" style={{ borderColor: currentTheme.border }}>
-                            <h3 className="font-semibold" style={{ color: currentTheme.textPrimary }}>{activePanel.title}</h3>
-                            <button onClick={() => setActivePanel(null)} className="text-slate-400 hover:text-slate-600 text-2xl leading-none">&times;</button>
-                        </div>
-                        <iframe src={activePanel.url} className="w-full h-[500px] border-0" />
-                    </div>
-                )}
-                
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {/* Card 1 */}
-                    <Card icon="bi bi-check2-square" title="Task Deligation">
+                    <Card icon="bi bi-check2-square" title="Task Delegation" theme={currentTheme}>
                         <p className="text-sm mb-4" style={{ color: currentTheme.textSecondary }}>Manage workflows and track completion.</p>
                         <div className="flex flex-wrap gap-2">
                             <a href="https://docs.google.com/forms/d/e/1FAIpQLSf4hFkMP31RLK2GLikE9LpctnIwhd-DKQLJAXJchdIQ733gwQ/viewform" target="_blank" className="px-3 py-1.5 rounded-full text-xs font-semibold" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>Form</a>
@@ -207,7 +191,7 @@
                     </Card>
                     
                     {/* Card 2 */}
-                    <Card icon="bi bi-clipboard-check" title="Check List">
+                    <Card icon="bi bi-clipboard-check" title="Check List" theme={currentTheme}>
                         <p className="text-sm mb-4" style={{ color: currentTheme.textSecondary }}>Real-time sync checklist management.</p>
                         <a href="https://checklist-nu-blue.vercel.app/" target="_blank" 
                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-white transition-all hover:scale-95"
@@ -217,7 +201,7 @@
                     </Card>
                     
                     {/* Card 3 */}
-                    <Card icon="bi bi-bell-fill" title="Disturbance Reminder">
+                    <Card icon="bi bi-bell-fill" title="Disturbance Reminder" theme={currentTheme}>
                         <div className="mb-4">
                             <a href="https://businesssamardutta-dot.github.io/Credit-Flow/" 
                                target="_blank" className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-white transition-all hover:scale-95"
@@ -232,11 +216,10 @@
                         {reminderMessage && <div className="text-[10px] mt-2 font-bold" style={{ color: currentTheme.accent }}>{reminderMessage}</div>}
                     </Card>
                     
-                    {/* UPDATED Card 4: Attendance Master */}
-                    <Card icon="bi bi-person-badge" title="Attendance Master">
+                    {/* Card 4 */}
+                    <Card icon="bi bi-person-badge" title="Attendance Master" theme={currentTheme}>
                         <p className="text-sm mb-4" style={{ color: currentTheme.textSecondary }}>Comprehensive employee & MIS management portal.</p>
                         <div className="mb-4">
-                            {/* LINK UPDATED TO THE REQUESTED URL AND SET TO OPEN IN NEW TAB TO SOLVE "BACK BUTTON" ISSUE */}
                             <a 
                                 href="https://businesssamardutta-dot.github.io/Attendence/" 
                                 target="_blank" 
@@ -253,7 +236,7 @@
                     </Card>
                     
                     {/* Card 5 */}
-                    <Card icon="bi bi-cpu" title="HARIBANSHA IQ">
+                    <Card icon="bi bi-cpu" title="HARIBANSHA IQ" theme={currentTheme}>
                         <div className="flex gap-2 mb-3">
                             <button onClick={healthScan} className="px-3 py-1.5 rounded-full text-xs font-semibold" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>Scan</button>
                             <button onClick={productivityPulse} className="px-3 py-1.5 rounded-full text-xs font-semibold" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>Pulse</button>
@@ -264,7 +247,7 @@
                     </Card>
                     
                     {/* Card 6 */}
-                    <Card icon="bi bi-bar-chart-steps" title="Live Hub">
+                    <Card icon="bi bi-bar-chart-steps" title="Live Hub" theme={currentTheme}>
                         <div className="text-xs p-3 rounded-lg space-y-1" style={{ backgroundColor: currentTheme.accentLight }}>
                             <div className="flex justify-between"><span>👥 Staff:</span><span className="font-bold">{liveData.employees}</span></div>
                             <div className="flex justify-between"><span>✅ Done:</span><span className="font-bold">{liveData.completion}%</span></div>
@@ -280,6 +263,9 @@
         );
     };
     
-    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    // Standard React 18 mounting logic
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
 </script>
+</body>
 </html>
