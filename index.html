@@ -7,10 +7,10 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <!-- React 18 -->
+    <!-- React 18 (UMD Versions) -->
     <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
-    <!-- Babel -->
+    <!-- Babel Standalone -->
     <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
     <style>
         * { transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease; }
@@ -26,246 +26,169 @@
     </style>
 </head>
 <body class="bg-slate-50">
-    <!-- Root element moved inside body -->
     <div id="root"></div>
 
-<script type="text/babel">
-    const { useState, useEffect } = React;
+    <!-- Added data-presets to prevent the 'import' error -->
+    <script type="text/babel" data-presets="react">
+        const { useState, useEffect } = React;
 
-    const themes = [
-        { id: 0, name: 'Violet Dream', accent: '#8b5cf6', accentLight: '#f3e8ff', textPrimary: '#0f172a', textSecondary: '#475569', border: '#e2e8f0', cardBg: '#ffffff', bodyBg: '#f8fafc' },
-        { id: 1, name: 'Emerald Glow', accent: '#10b981', accentLight: '#d1fae5', textPrimary: '#064e3b', textSecondary: '#047857', border: '#a7f3d0', cardBg: '#ffffff', bodyBg: '#ecfdf5' },
-        { id: 2, name: 'Rose Quartz', accent: '#f43f5e', accentLight: '#ffe4e6', textPrimary: '#881337', textSecondary: '#e11d48', border: '#fecdd3', cardBg: '#ffffff', bodyBg: '#fff1f2' },
-        { id: 3, name: 'Ocean Breeze', accent: '#0ea5e9', accentLight: '#e0f2fe', textPrimary: '#0c4a6e', textSecondary: '#0284c7', border: '#bae6fd', cardBg: '#ffffff', bodyBg: '#f0f9ff' },
-        { id: 4, name: 'Amber Sunset', accent: '#f59e0b', accentLight: '#fef3c7', textPrimary: '#78350f', textSecondary: '#d97706', border: '#fde68a', cardBg: '#ffffff', bodyBg: '#fffbeb' },
-        { id: 5, name: 'Teal Mystic', accent: '#14b8a6', accentLight: '#ccfbf1', textPrimary: '#134e4a', textSecondary: '#0d9488', border: '#99f6e4', cardBg: '#ffffff', bodyBg: '#f0fdfa' },
-        { id: 6, name: 'Indigo Nights', accent: '#6366f1', accentLight: '#e0e7ff', textPrimary: '#1e1b4b', textSecondary: '#4338ca', border: '#c7d2fe', cardBg: '#ffffff', bodyBg: '#eef2ff' },
-        { id: 7, name: 'Coral Haven', accent: '#f97316', accentLight: '#ffedd5', textPrimary: '#7f2d1b', textSecondary: '#ea580c', border: '#fed7aa', cardBg: '#ffffff', bodyBg: '#fff5f0' },
-        { id: 8, name: 'Lime Frost', accent: '#84cc16', accentLight: '#ecfccb', textPrimary: '#365314', textSecondary: '#65a30d', border: '#d9f99d', cardBg: '#ffffff', bodyBg: '#f7fee7' },
-        { id: 9, name: 'Royal Purple', accent: '#a855f7', accentLight: '#f3e8ff', textPrimary: '#3b0764', textSecondary: '#9333ea', border: '#e9d5ff', cardBg: '#ffffff', bodyBg: '#faf5ff' },
-        { id: 10, name: 'Peach Bloom', accent: '#ef4444', accentLight: '#fee2e2', textPrimary: '#7f1d1d', textSecondary: '#dc2626', border: '#fecaca', cardBg: '#ffffff', bodyBg: '#fef2f2' },
-        { id: 11, name: 'Mint Leaf', accent: '#22c55e', accentLight: '#dcfce7', textPrimary: '#14532d', textSecondary: '#16a34a', border: '#bbf7d0', cardBg: '#ffffff', bodyBg: '#f0fdf4' },
-        { id: 12, name: 'Electric Cyan', accent: '#06b6d4', accentLight: '#cffafe', textPrimary: '#164e63', textSecondary: '#0891b2', border: '#a5f3fc', cardBg: '#ffffff', bodyBg: '#ecfeff' }
-    ];
+        const themes = [
+            { id: 0, name: 'Violet Dream', accent: '#8b5cf6', accentLight: '#f3e8ff', textPrimary: '#0f172a', textSecondary: '#475569', border: '#e2e8f0', cardBg: '#ffffff', bodyBg: '#f8fafc' },
+            { id: 1, name: 'Emerald Glow', accent: '#10b981', accentLight: '#d1fae5', textPrimary: '#064e3b', textSecondary: '#047857', border: '#a7f3d0', cardBg: '#ffffff', bodyBg: '#ecfdf5' },
+            { id: 2, name: 'Rose Quartz', accent: '#f43f5e', accentLight: '#ffe4e6', textPrimary: '#881337', textSecondary: '#e11d48', border: '#fecdd3', cardBg: '#ffffff', bodyBg: '#fff1f2' },
+            { id: 3, name: 'Ocean Breeze', accent: '#0ea5e9', accentLight: '#e0f2fe', textPrimary: '#0c4a6e', textSecondary: '#0284c7', border: '#bae6fd', cardBg: '#ffffff', bodyBg: '#f0f9ff' },
+            { id: 4, name: 'Amber Sunset', accent: '#f59e0b', accentLight: '#fef3c7', textPrimary: '#78350f', textSecondary: '#d97706', border: '#fde68a', cardBg: '#ffffff', bodyBg: '#fffbeb' },
+            { id: 5, name: 'Teal Mystic', accent: '#14b8a6', accentLight: '#ccfbf1', textPrimary: '#134e4a', textSecondary: '#0d9488', border: '#99f6e4', cardBg: '#ffffff', bodyBg: '#f0fdfa' },
+            { id: 6, name: 'Indigo Nights', accent: '#6366f1', accentLight: '#e0e7ff', textPrimary: '#1e1b4b', textSecondary: '#4338ca', border: '#c7d2fe', cardBg: '#ffffff', bodyBg: '#eef2ff' },
+            { id: 7, name: 'Coral Haven', accent: '#f97316', accentLight: '#ffedd5', textPrimary: '#7f2d1b', textSecondary: '#ea580c', border: '#fed7aa', cardBg: '#ffffff', bodyBg: '#fff5f0' },
+            { id: 8, name: 'Lime Frost', accent: '#84cc16', accentLight: '#ecfccb', textPrimary: '#365314', textSecondary: '#65a30d', border: '#d9f99d', cardBg: '#ffffff', bodyBg: '#f7fee7' },
+            { id: 9, name: 'Royal Purple', accent: '#a855f7', accentLight: '#f3e8ff', textPrimary: '#3b0764', textSecondary: '#9333ea', border: '#e9d5ff', cardBg: '#ffffff', bodyBg: '#faf5ff' },
+            { id: 10, name: 'Peach Bloom', accent: '#ef4444', accentLight: '#fee2e2', textPrimary: '#7f1d1d', textSecondary: '#dc2626', border: '#fecaca', cardBg: '#ffffff', bodyBg: '#fef2f2' },
+            { id: 11, name: 'Mint Leaf', accent: '#22c55e', accentLight: '#dcfce7', textPrimary: '#14532d', textSecondary: '#16a34a', border: '#bbf7d0', cardBg: '#ffffff', bodyBg: '#f0fdf4' },
+            { id: 12, name: 'Electric Cyan', accent: '#06b6d4', accentLight: '#cffafe', textPrimary: '#164e63', textSecondary: '#0891b2', border: '#a5f3fc', cardBg: '#ffffff', bodyBg: '#ecfeff' }
+        ];
 
-    // FIXED: Card component moved OUTSIDE App to prevent re-render loops
-    const Card = ({ icon, title, children, theme }) => (
-        <div className="rounded-2xl border shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" 
-             style={{ backgroundColor: theme.cardBg, borderColor: theme.border }}>
-            <div className="p-5">
-                <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: theme.accentLight }}>
-                        <i className={`${icon} text-xl`} style={{ color: theme.accent }}></i>
+        const Card = ({ icon, title, theme, children }) => (
+            <div className="rounded-2xl border shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" 
+                 style={{ backgroundColor: theme.cardBg, borderColor: theme.border }}>
+                <div className="p-5">
+                    <div className="flex items-center gap-3 mb-3">
+                        <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: theme.accentLight }}>
+                            <i className={`${icon} text-xl`} style={{ color: theme.accent }}></i>
+                        </div>
+                        <h2 className="text-xl font-bold" style={{ color: theme.textPrimary }}>{title}</h2>
                     </div>
-                    <h2 className="text-xl font-bold" style={{ color: theme.textPrimary }}>{title}</h2>
+                    {children}
                 </div>
-                {children}
-            </div>
-        </div>
-    );
-
-    const App = () => {
-        const [currentTheme, setCurrentTheme] = useState(() => {
-            const saved = localStorage.getItem('haribanshoReactTheme');
-            return saved ? JSON.parse(saved) : themes[0];
-        });
-        const [dropdownOpen, setDropdownOpen] = useState(false);
-        const [activePanel, setActivePanel] = useState(null);
-        const [reminders, setReminders] = useState([]);
-        const [reminderMessage, setReminderMessage] = useState('');
-        const [iqResponse, setIqResponse] = useState('🤖 Ready to analyze operations');
-        const [liveData, setLiveData] = useState({ employees: 52, tasks: 28, completion: 87.5, time: new Date().toLocaleTimeString() });
-        
-        useEffect(() => {
-            document.body.style.backgroundColor = currentTheme.bodyBg;
-            localStorage.setItem('haribanshoReactTheme', JSON.stringify(currentTheme));
-        }, [currentTheme]);
-        
-        useEffect(() => {
-            const saved = localStorage.getItem('haribanshoReminders');
-            if (saved) setReminders(JSON.parse(saved));
-        }, []);
-        
-        useEffect(() => {
-            localStorage.setItem('haribanshoReminders', JSON.stringify(reminders));
-        }, [reminders]);
-        
-        useEffect(() => {
-            const interval = setInterval(() => {
-                setLiveData(prev => ({
-                    ...prev,
-                    employees: 48 + Math.floor(Math.random() * 18),
-                    time: new Date().toLocaleTimeString()
-                }));
-            }, 5000);
-            return () => clearInterval(interval);
-        }, []);
-        
-        const selectTheme = (theme) => {
-            setCurrentTheme(theme);
-            setDropdownOpen(false);
-        };
-        
-        const setReminder = () => {
-            const text = prompt("Set a disturbance reminder:");
-            if (text?.trim()) {
-                const newReminder = { id: Date.now(), text: text.trim(), time: new Date().toLocaleString() };
-                setReminders([...reminders, newReminder]);
-                setReminderMessage(`✅ Added: "${text}"`);
-                setTimeout(() => setReminderMessage(''), 3000);
-            }
-        };
-        
-        const viewReminders = () => {
-            if (reminders.length === 0) {
-                alert("No active reminders.");
-            } else {
-                alert(reminders.map(r => `🔹 ${r.text} (${r.time})`).join('\n'));
-            }
-        };
-        
-        const healthScan = () => {
-            setIqResponse('<i class="bi bi-arrow-repeat animate-spin mr-1"></i> Scanning...');
-            setTimeout(() => setIqResponse('✅ Health Index: 94% | Flow: Optimal'), 700);
-        };
-        
-        const productivityPulse = () => {
-            setIqResponse('⚡ Pulse: Peak 9–11 AM | +22% efficiency');
-        };
-
-        return (
-            <div className="max-w-[1440px] mx-auto px-4 sm:px-6 py-6 sm:py-8">
-                {/* Header */}
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-                    <div>
-                        <h1 className="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
-                            <i className="bi bi-charging-station-fill text-purple-500 mr-2"></i>
-                            HARIBANSHA
-                        </h1>
-                        <p className="text-sm mt-1 font-medium" style={{ color: currentTheme.textSecondary }}>Real-time Intelligence Dashboard</p>
-                    </div>
-                    
-                    <div className="relative">
-                        <button 
-                            onClick={() => setDropdownOpen(!dropdownOpen)}
-                            className="flex items-center gap-2 px-5 py-2.5 rounded-full border shadow-sm hover:shadow-md transition-all duration-200 text-sm font-medium"
-                            style={{ backgroundColor: currentTheme.cardBg, borderColor: currentTheme.border, color: currentTheme.textPrimary }}
-                        >
-                            <i className="bi bi-palette-fill" style={{ color: currentTheme.accent }}></i>
-                            <span>{currentTheme.name}</span>
-                            <i className={`bi bi-chevron-down text-xs transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`}></i>
-                        </button>
-                        
-                        {dropdownOpen && (
-                            <div className="absolute right-0 mt-2 w-72 rounded-2xl shadow-xl border overflow-hidden z-50 inline-panel" 
-                                 style={{ backgroundColor: currentTheme.cardBg, borderColor: currentTheme.border }}>
-                                <div className="p-3 border-b" style={{ borderColor: currentTheme.border, backgroundColor: currentTheme.accentLight }}>
-                                    <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: currentTheme.textSecondary }}>Choose your vibe</p>
-                                </div>
-                                <div className="p-3 grid grid-cols-4 gap-2 max-h-80 overflow-y-auto">
-                                    {themes.map(theme => (
-                                        <button
-                                            key={theme.id}
-                                            onClick={() => selectTheme(theme)}
-                                            className="flex flex-col items-center gap-1 p-2 rounded-xl transition-all hover:scale-105"
-                                            style={{ backgroundColor: theme.accentLight }}
-                                        >
-                                            <div className="w-6 h-6 rounded-full" style={{ backgroundColor: theme.accent }}></div>
-                                            <span className="text-[10px] font-medium" style={{ color: theme.textPrimary }}>{theme.name.split(' ')[0]}</span>
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {/* Card 1 */}
-                    <Card icon="bi bi-check2-square" title="Task Delegation" theme={currentTheme}>
-                        <p className="text-sm mb-4" style={{ color: currentTheme.textSecondary }}>Manage workflows and track completion.</p>
-                        <div className="flex flex-wrap gap-2">
-                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSf4hFkMP31RLK2GLikE9LpctnIwhd-DKQLJAXJchdIQ733gwQ/viewform" target="_blank" className="px-3 py-1.5 rounded-full text-xs font-semibold" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>Form</a>
-                            <a href="https://lookerstudio.google.com/reporting/c5bf7946-59a1-4896-be77-ec76dbd83447/page/qlD" target="_blank" className="px-3 py-1.5 rounded-full text-xs font-semibold" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>Done List</a>
-                        </div>
-                    </Card>
-                    
-                    {/* Card 2 */}
-                    <Card icon="bi bi-clipboard-check" title="Check List" theme={currentTheme}>
-                        <p className="text-sm mb-4" style={{ color: currentTheme.textSecondary }}>Real-time sync checklist management.</p>
-                        <a href="https://checklist-nu-blue.vercel.app/" target="_blank" 
-                           className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-white transition-all hover:scale-95"
-                           style={{ backgroundColor: currentTheme.accent }}>
-                            <i className="bi bi-box-arrow-up-right"></i> Launch App
-                        </a>
-                    </Card>
-                    
-                    {/* Card 3 */}
-                    <Card icon="bi bi-bell-fill" title="Disturbance Reminder" theme={currentTheme}>
-                        <div className="mb-4">
-                            <a href="https://businesssamardutta-dot.github.io/Credit-Flow/" 
-                               target="_blank" className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-white transition-all hover:scale-95"
-                               style={{ backgroundColor: '#8b5cf6' }}>
-                                <i className="bi bi-box-arrow-up-right"></i> Launch App
-                            </a>
-                        </div>
-                        <div className="flex gap-2">
-                            <button onClick={setReminder} className="px-3 py-1 rounded-full text-xs font-medium" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>Set</button>
-                            <button onClick={viewReminders} className="px-3 py-1 rounded-full text-xs font-medium" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>View</button>
-                        </div>
-                        {reminderMessage && <div className="text-[10px] mt-2 font-bold" style={{ color: currentTheme.accent }}>{reminderMessage}</div>}
-                    </Card>
-                    
-                    {/* Card 4 */}
-                    <Card icon="bi bi-person-badge" title="Attendance Master" theme={currentTheme}>
-                        <p className="text-sm mb-4" style={{ color: currentTheme.textSecondary }}>Comprehensive employee & MIS management portal.</p>
-                        <div className="mb-4">
-                            <a 
-                                href="https://businesssamardutta-dot.github.io/Attendence/" 
-                                target="_blank" 
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-white transition-all hover:scale-95 shadow-sm"
-                                style={{ backgroundColor: currentTheme.accent }}
-                            >
-                                <i className="bi bi-box-arrow-up-right"></i> Launch Attendance App
-                            </a>
-                        </div>
-                        <div className="text-xs p-2 rounded-lg text-center" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.textSecondary }}>
-                            <i className="bi bi-globe2 mr-1"></i> Live Sync • {liveData.time}
-                        </div>
-                    </Card>
-                    
-                    {/* Card 5 */}
-                    <Card icon="bi bi-cpu" title="HARIBANSHA IQ" theme={currentTheme}>
-                        <div className="flex gap-2 mb-3">
-                            <button onClick={healthScan} className="px-3 py-1.5 rounded-full text-xs font-semibold" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>Scan</button>
-                            <button onClick={productivityPulse} className="px-3 py-1.5 rounded-full text-xs font-semibold" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>Pulse</button>
-                        </div>
-                        <div className="text-xs p-2 rounded-lg text-center" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.textSecondary }}>
-                            <span dangerouslySetInnerHTML={{ __html: iqResponse }} />
-                        </div>
-                    </Card>
-                    
-                    {/* Card 6 */}
-                    <Card icon="bi bi-bar-chart-steps" title="Live Hub" theme={currentTheme}>
-                        <div className="text-xs p-3 rounded-lg space-y-1" style={{ backgroundColor: currentTheme.accentLight }}>
-                            <div className="flex justify-between"><span>👥 Staff:</span><span className="font-bold">{liveData.employees}</span></div>
-                            <div className="flex justify-between"><span>✅ Done:</span><span className="font-bold">{liveData.completion}%</span></div>
-                            <div className="flex justify-between"><span>⚙️ Uptime:</span><span className="font-bold">99.9%</span></div>
-                        </div>
-                    </Card>
-                </div>
-                
-                <footer className="text-center text-slate-400 text-xs pt-8 mt-4 border-t border-slate-100">
-                    <i className="bi bi-charging-station"></i> HARIBANSHA React Dashboard • 2026
-                </footer>
             </div>
         );
-    };
-    
-    // Standard React 18 mounting logic
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<App />);
-</script>
+
+        const App = () => {
+            const [currentTheme, setCurrentTheme] = useState(() => {
+                const saved = localStorage.getItem('haribanshoReactTheme');
+                return saved ? JSON.parse(saved) : themes[0];
+            });
+            const [dropdownOpen, setDropdownOpen] = useState(false);
+            const [reminders, setReminders] = useState([]);
+            const [reminderMessage, setReminderMessage] = useState('');
+            const [iqResponse, setIqResponse] = useState('🤖 Ready to analyze operations');
+            const [liveData, setLiveData] = useState({ employees: 52, completion: 87.5, time: new Date().toLocaleTimeString() });
+
+            useEffect(() => {
+                document.body.style.backgroundColor = currentTheme.bodyBg;
+                localStorage.setItem('haribanshoReactTheme', JSON.stringify(currentTheme));
+            }, [currentTheme]);
+
+            useEffect(() => {
+                const interval = setInterval(() => {
+                    setLiveData(prev => ({
+                        ...prev,
+                        employees: 48 + Math.floor(Math.random() * 18),
+                        time: new Date().toLocaleTimeString()
+                    }));
+                }, 5000);
+                return () => clearInterval(interval);
+            }, []);
+
+            const setReminder = () => {
+                const text = prompt("Set a disturbance reminder:");
+                if (text?.trim()) {
+                    const newReminder = { id: Date.now(), text: text.trim(), time: new Date().toLocaleString() };
+                    setReminders([...reminders, newReminder]);
+                    setReminderMessage(`✅ Added: "${text}"`);
+                    setTimeout(() => setReminderMessage(''), 3000);
+                }
+            };
+
+            return (
+                <div className="max-w-[1440px] mx-auto px-4 py-8">
+                    <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8">
+                        <div>
+                            <h1 className="text-4xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
+                                <i className="bi bi-charging-station-fill text-purple-500 mr-2"></i>
+                                HARIBANSHA
+                            </h1>
+                            <p className="text-sm font-medium" style={{ color: currentTheme.textSecondary }}>Real-time Intelligence Dashboard</p>
+                        </div>
+
+                        <div className="relative">
+                            <button 
+                                onClick={() => setDropdownOpen(!dropdownOpen)}
+                                className="flex items-center gap-2 px-5 py-2.5 rounded-full border shadow-sm text-sm font-medium"
+                                style={{ backgroundColor: currentTheme.cardBg, borderColor: currentTheme.border, color: currentTheme.textPrimary }}
+                            >
+                                <i className="bi bi-palette-fill" style={{ color: currentTheme.accent }}></i>
+                                <span>{currentTheme.name}</span>
+                                <i className={`bi bi-chevron-down transition-transform ${dropdownOpen ? 'rotate-180' : ''}`}></i>
+                            </button>
+                            
+                            {dropdownOpen && (
+                                <div className="absolute right-0 mt-2 w-72 rounded-2xl shadow-xl border overflow-hidden z-50 inline-panel" 
+                                     style={{ backgroundColor: currentTheme.cardBg, borderColor: currentTheme.border }}>
+                                    <div className="p-3 grid grid-cols-4 gap-2 max-h-80 overflow-y-auto">
+                                        {themes.map(theme => (
+                                            <button key={theme.id} onClick={() => {setCurrentTheme(theme); setDropdownOpen(false);}}
+                                                className="flex flex-col items-center gap-1 p-2 rounded-xl" style={{ backgroundColor: theme.accentLight }}>
+                                                <div className="w-6 h-6 rounded-full" style={{ backgroundColor: theme.accent }}></div>
+                                                <span className="text-[10px] font-medium" style={{ color: theme.textPrimary }}>{theme.name.split(' ')[0]}</span>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <Card icon="bi bi-check2-square" title="Task Delegation" theme={currentTheme}>
+                            <p className="text-sm mb-4" style={{ color: currentTheme.textSecondary }}>Manage workflows and track completion.</p>
+                            <div className="flex gap-2">
+                                <a href="https://docs.google.com/forms/d/e/1FAIpQLSf4hFkMP31RLK2GLikE9LpctnIwhd-DKQLJAXJchdIQ733gwQ/viewform" target="_blank" className="px-3 py-1.5 rounded-full text-xs font-semibold" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>Form</a>
+                                <a href="https://lookerstudio.google.com/reporting/c5bf7946-59a1-4896-be77-ec76dbd83447/page/qlD" target="_blank" className="px-3 py-1.5 rounded-full text-xs font-semibold" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>Done List</a>
+                            </div>
+                        </Card>
+
+                        <Card icon="bi bi-clipboard-check" title="Check List" theme={currentTheme}>
+                            <p className="text-sm mb-4" style={{ color: currentTheme.textSecondary }}>Real-time sync checklist management.</p>
+                            <a href="https://checklist-nu-blue.vercel.app/" target="_blank" className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-white" style={{ backgroundColor: currentTheme.accent }}>
+                                <i className="bi bi-box-arrow-up-right"></i> Launch App
+                            </a>
+                        </Card>
+
+                        <Card icon="bi bi-person-badge" title="Attendance Master" theme={currentTheme}>
+                            <p className="text-sm mb-4" style={{ color: currentTheme.textSecondary }}>Employee & MIS management portal.</p>
+                            <a href="https://businesssamardutta-dot.github.io/Attendence/" target="_blank" className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-white" style={{ backgroundColor: currentTheme.accent }}>
+                                <i className="bi bi-box-arrow-up-right"></i> Launch App
+                            </a>
+                        </Card>
+
+                        <Card icon="bi bi-cpu" title="HARIBANSHA IQ" theme={currentTheme}>
+                            <div className="flex gap-2 mb-3">
+                                <button onClick={() => setIqResponse('✅ Health: 94%')} className="px-3 py-1.5 rounded-full text-xs font-semibold" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.accent }}>Scan</button>
+                            </div>
+                            <div className="text-xs p-2 rounded-lg text-center" style={{ backgroundColor: currentTheme.accentLight, color: currentTheme.textSecondary }}>
+                                {iqResponse}
+                            </div>
+                        </Card>
+
+                        <Card icon="bi bi-bar-chart-steps" title="Live Hub" theme={currentTheme}>
+                            <div className="text-xs p-3 rounded-lg space-y-1" style={{ backgroundColor: currentTheme.accentLight }}>
+                                <div className="flex justify-between"><span>👥 Staff:</span><span className="font-bold">{liveData.employees}</span></div>
+                                <div className="flex justify-between"><span>✅ Done:</span><span className="font-bold">{liveData.completion}%</span></div>
+                                <div className="flex justify-between"><span>🕒 Time:</span><span className="font-bold">{liveData.time}</span></div>
+                            </div>
+                        </Card>
+                    </div>
+
+                    <footer className="text-center text-slate-400 text-xs pt-8 mt-4 border-t border-slate-100">
+                        <i className="bi bi-charging-station"></i> HARIBANSHA React Dashboard • 2026
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
 </body>
 </html>
