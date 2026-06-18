@@ -163,13 +163,35 @@
                             </a>
                         </Card>
 
-                        {/* Card 4: Credit Flow (RE-ATTACHED LINK) */}
-                        <Card icon="bi bi-arrow-repeat" title="Credit Flow" theme={currentTheme}>
-                            <p className="text-sm mb-4" style={{ color: currentTheme.isDark ? '#94a3b8' : '#64748b' }}>Real-time credit management flow.</p>
-                            <a href="https://businesssamardutta-dot.github.io/Credit-Flow/" target="_blank" className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-white shadow-lg" style={btnStyle}>
-                                <i className="bi bi-box-arrow-up-right"></i> Launch App
-                            </a>
-                        </Card>
+                       {/* Card 4: Credit Flow (RE-ATTACHED LINK) */}
+<Card icon="bi bi-arrow-repeat" title="Credit Flow" theme={currentTheme}>
+    <p className="text-sm mb-4" style={{ color: currentTheme.isDark ? '#94a3b8' : '#64748b' }}>
+        Real-time credit management flow.
+    </p>
+    
+    {/* This div wrapper is REQUIRED to hold two buttons side-by-side */}
+    <div className="flex flex-wrap gap-3">
+        <a 
+            href="https://businesssamardutta-dot.github.io/Credit-Flow/" 
+            target="_blank" 
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-white shadow-lg" 
+            style={btnStyle}
+        >
+            <i className="bi bi-box-arrow-up-right"></i> Launch App
+        </a>
+
+        <a 
+            href="https://businesssamardutta-dot.github.io/Sefali-Credit-Flow/" 
+            target="_blank" 
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-white shadow-lg" 
+            style={btnStyle}
+        >
+            <i className="bi bi-box-arrow-up-right"></i> Sefali CreditFlow
+        </a>
+    </div>
+</Card>
 
                         {/* Card 5: Live Hub */}
                         <Card icon="bi bi-bar-chart-steps" title="Live Hub" theme={currentTheme}>
